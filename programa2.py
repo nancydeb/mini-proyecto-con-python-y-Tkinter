@@ -3,6 +3,8 @@ import tkinter as tk
 from tkinter import ttk
 from datetime import datetime
 import time
+from tkinter import messagebox
+from tkinter import PhotoImage
 
 # ---------------------------------------- FUNCIONES ----------------------------------------------------
 
@@ -19,9 +21,19 @@ def actualizar_reloj():
     etiqueta_reloj.config(text=hora_actual)
     ventana.after(1000, actualizar_reloj)
 
+# Función para cerrar la ventana de portada y abrir la ventana principal
+def abrir_ventana_principal():
+    ventana_portada.destroy()
+
+
+# Función para mostar un mensaje cuando se selecciona una opción del menú
+# Esto a futuro debería abrir la ventana de la opción seleccionada.
+def mostrar_mensaje():
+    messagebox.showinfo("Mensaje", "¡Has seleccionado una opción del menú!")
 
 # EMPLEADOS
 
+# Función para agregar
 def agregar_empleado():
     nuevo_empleado = entrada_nuevo_empleado.get()
     if nuevo_empleado:
@@ -47,7 +59,7 @@ def abrir_lista_empleados():
     
     scrollbar_lista.config(command=listbox_empleados.yview)
 
-# Función para manejar la selección del Combobox
+# Función para manejar la selección del Combobox (lista)
     def seleccionar_empleado(event):
         seleccion = listbox_empleados.curselection()
         if seleccion:
@@ -74,7 +86,8 @@ def registrar_entrada_salida(accion):
 
 #AGREGAR
 def agregar_elemento():
-    # Aquí puedes agregar la lógica para añadir un elemento o realizar una acción al presionar el botón
+    # lógica para añadir un elemento.
+    # Utilicé para hacer pruebas.
     print("Elemento agregado")
 
 #ELIMINAR
@@ -109,17 +122,39 @@ def eliminar_empleado():
     boton_confirmar.pack(pady=10)
 
 def eliminar_elemento():
-    # Aquí puedes agregar la lógica para eliminar un elemento o realizar una acción al presionar el botón
+    # la lógica para eliminar un elemento.
+    # Utilicé para hacer pruebas
     print("Elemento eliminado")
 
 # -------------------------------------   # INTERFAZ  -----------------------------------------------------
+# Crear la ventana de portada
+ventana_portada = tk.Tk()
+ventana_portada.title("Bienvenido al Sistema de Registro de Entradas y Salidas")
+
+# Etiqueta de bienvenida al iniciar la app.
+label_bienvenida = tk.Label(ventana_portada, text="¡Bienvenidos al mini-proyecto de registros!", font=("Arial", 26))
+label_bienvenida.pack(padx=20, pady=20)
+
+# Cargar la imagen de portada
+imagen = PhotoImage(file="equipo5.png").subsample(2,2)  # cargar la imagen y dar las dimensiones
+label_imagen = tk.Label(ventana_portada, image=imagen)
+label_imagen.pack()
+
+
+# Botón de inicio que aparece en la portada.
+# Este botón al hacer clic se cierra.
+boton_inicio = tk.Button(ventana_portada, text="Iniciar", bg="#2F4F4F", fg="white", padx=10, pady=5, font=("Arial", 12), command=abrir_ventana_principal)
+boton_inicio.pack(pady=20)
+
+
 
 
 # crear la ventana principal
 ventana = tk.Tk()
-ventana.title("Registro de entradas y salidas del empleado") #título
+ventana.title("Registro de marcación de empleados") #título
 ventana.geometry('600x600') # Dimensiones
 ventana.configure(background="#2F4F4F")
+
 
 # Obtener la fecha actual
 fecha_actual = obtener_fecha_actual()
@@ -129,6 +164,25 @@ etiqueta_reloj = tk.Label(ventana, font='Arial',background="#2f4f4f",fg="white")
 etiqueta_reloj.pack(pady=10)
 actualizar_reloj()
 
+# Crear un menú
+barra_menu = tk.Menu(ventana)
+
+# Crear opciones para el menú
+menu_opciones = tk.Menu(barra_menu, tearoff=0)
+menu_opciones.add_command(label="Cargar Registros", command=mostrar_mensaje) # Muestra un mensaje para probar la función.
+menu_opciones.add_command(label="Agregar Empleados", command=mostrar_mensaje)
+menu_opciones.add_command(label="Buscar Empleados", command=mostrar_mensaje)
+menu_opciones.add_separator() # Es una linéa con el onjetivo de separar el menú por temas.
+menu_opciones.add_command(label="Generar Reportes", command=mostrar_mensaje)
+menu_opciones.add_separator()
+menu_opciones.add_command(label="Salir", command=ventana.quit)
+
+# Agregar opciones al menú principal
+barra_menu.add_cascade(label="Menú", menu=menu_opciones)
+
+# Configurar la ventana para usar la barra de menú
+ventana.config(menu=barra_menu)
+
 # EMPLEADOS
 
 # Lista de empleados (menú desplegable)
@@ -136,9 +190,9 @@ label_empleado = tk.Label(ventana, text="Seleccione su nombre dentro de la lista
 label_empleado.pack(pady=5)
 
 # Lista de empleados
-empleados = ["Santiago Scacciaferro", "Nancy Débora", "Carlos Floriani", "Mayra","María Fernanda", "Anahí Robledo", "Horacio Gutierrez"]
+empleados = ["Santiago Scacciaferro", "Nancy Débora", "Carlos Floriani", "Mayra","María Fernanda", "Anahí", "Horacio Gutierrez"]
 
-# Crear Combobox con la lista de empleados
+# Crear lista de empleados
 listbox_empleados = ttk.Combobox(ventana, values= empleados)
 listbox_empleados.current(0)  # Establecer el valor por defecto
 listbox_empleados.pack(pady=10)
@@ -156,6 +210,7 @@ boton_agregar = ttk.Button(ventana, text="Agregar Nuevo Empleado", command=agreg
 boton_agregar.pack(pady=5)
 
 # BOTONES
+
 #Existen dos tipo tk y ttk (la segunda es la mas "nueva")
 style = ttk.Style()
 style.configure("TButton", foreground="black")  # Configurar el color del texto del botón.
