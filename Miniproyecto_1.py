@@ -7,6 +7,8 @@ import time
 ventana = tk.Tk()
 ventana.title("Registro de Entrada y Salida de Empleados")
 ventana.geometry("500x500")
+ventana.config(bg= "#808000")
+
 
 Label(ventana, text="").pack()  # Separador
 etiqueta = tk.Label(ventana, 
@@ -15,11 +17,13 @@ etiqueta = tk.Label(ventana,
     width=40, height=2, anchor="center")
 etiqueta.pack()
 
+
 # Función para actualizar el reloj
 def actualizar_reloj():
     hora_actual = time.strftime("%H:%M:%S")
     etiqueta_reloj.config(text=hora_actual)
     ventana.after(1000, actualizar_reloj)
+
 
 # Función para manejar el registro de entrada/salida
 def registrar_entrada_salida(accion):
@@ -50,7 +54,8 @@ def abrir_lista_empleados():
     
     scrollbar_lista = tk.Scrollbar(ventana_lista)
     scrollbar_lista.pack(side=tk.RIGHT, fill=tk.Y)
-    
+
+
     listbox_empleados = tk.Listbox(ventana_lista, yscrollcommand=scrollbar_lista.set)
     for empleado in empleados:
         listbox_empleados.insert(tk.END, empleado)
