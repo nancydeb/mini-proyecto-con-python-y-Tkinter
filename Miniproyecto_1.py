@@ -10,7 +10,7 @@ from tkinter import PhotoImage
 # Crear la ventana de portada
 ventana_portada = tk.Tk()
 ventana_portada.title("Bienvenido al Sistema de Registro de Entradas y Salidas")
-ventana_portada.geometry("500x500")
+ventana_portada.geometry("600x600")
 ventana_portada.config(bg="#808000")
 # Etiqueta de bienvenida al iniciar la app.
 label_bienvenida = tk.Label(ventana_portada,
@@ -40,7 +40,7 @@ boton_inicio.pack(pady=20)
 # Configuración de la ventana principal
 ventana = tk.Tk()
 ventana.title("Registro de Entrada y Salida de Empleados")
-ventana.geometry("500x500")
+ventana.geometry("600x600")
 ventana.config(bg= "#808000")
 
 Label(ventana, text="").pack()  # Separador
@@ -59,10 +59,16 @@ def actualizar_reloj():
     ventana.after(1000, actualizar_reloj)"""
 
 # Función para actualizar fecha y hora 
-def actualizar_fecha_hora():
-    fecha_hora=datetime.now()
-    etiqueta_fecha_hora.config(text=fecha_hora)
-    ventana.after(1000, actualizar_fecha_hora)
+def actualizar_fecha():
+    #fecha_hora=datetime.now()
+    fecha_actual= time.strftime('%d/%m/%y'),
+    etiqueta_fecha.config(text=fecha_actual)
+    ventana.after(1000, actualizar_fecha)
+    
+def actualizar_hora():
+    hora_actual= time.strftime('%H:%M:%S')
+    etiqueta_hora.config(text=hora_actual)
+    ventana.after(1000, actualizar_hora)
 
 # Función para cerrar la ventana de portada y abrir la ventana principal
 def abrir_ventana_principal():
@@ -73,7 +79,7 @@ def abrir_ventana_principal():
 def registrar_entrada_salida(accion):
     nombre_empleado = combo_empleados.get()
     if nombre_empleado:
-        mensaje = f"{nombre_empleado} ha registrado su {accion} a las {time.strftime('%H:%M:%S')}"
+        mensaje = f"{nombre_empleado} ha registrado su {accion} a las {time.strftime('%H:%M:%S')} del día {time.strftime ("%d/%m/%y")}"
         lista_registro.insert(tk.END, mensaje)
     else:
         mensaje_error.config(text="¡Seleccione un empleado!")
@@ -161,9 +167,13 @@ menu_archivo.add_command(label="Salir", command=ventana.quit)
 #actualizar_reloj()
 
 #Fecha
-etiqueta_fecha_hora = tk.Label(ventana, text= "Fecha y Hora:", fg="aqua",bg="black", font=('Arial', 14))
-etiqueta_fecha_hora.pack(pady=10)
-actualizar_fecha_hora()
+etiqueta_fecha = tk.Label(ventana,  text= "Fecha:", fg="aqua",bg="black", font=('Arial', 14))
+etiqueta_fecha.pack(pady=10)
+actualizar_fecha()
+etiqueta_hora = tk.Label(ventana, text= "Hora:", fg="aqua",bg="black", font=('Arial', 14))
+etiqueta_hora.pack(pady=10)
+
+actualizar_hora()
 
 # Lista de empleados (menú desplegable)
 label_empleado = tk.Label(ventana, text="Seleccione su nombre:")
@@ -189,7 +199,7 @@ mensaje_error = tk.Label(ventana, text="", fg="red")
 mensaje_error.pack(pady=5)
 
 # Cuadro de entrada para agregar nuevo empleado
-label_nuevo_empleado = tk.Label(ventana,  text="Agregar nuevo empleado:")
+label_nuevo_empleado = tk.Label(ventana, text="Agregar nuevo empleado:")
 label_nuevo_empleado.pack(pady=5)
 entrada_nuevo_empleado = tk.Entry(ventana)
 entrada_nuevo_empleado.pack(pady=5)
